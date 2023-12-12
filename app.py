@@ -1,6 +1,6 @@
-from decouple import Config
+from decouple import Config, Csv
 
-config = config()
+config = Config()
 
 SECRET_KEY = config.get('SECRET_KEY')
 API_KEY = config.get('API_KEY')
