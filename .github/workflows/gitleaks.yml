@@ -1,23 +1,21 @@
-name: Gitleaks Scan
+name: gitleaks
 
 on:
+  pull_request:
   push:
     branches:
-      - main # o el nombre de tu rama principal
-
+      - main
+  workflow_dispatch:
+  
 jobs:
-  gitleaks-scan:
+  scan:
+    name: gitleaks
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    - name: Install Gitleaks
-      run: |
-        wget https://github.com/zricethezav/gitleaks/releases/download/v7.5.0/gitleaks-linux-amd64
-        chmod +x gitleaks-linux-amd64
-        sudo mv gitleaks-linux-amd64 /usr/local/bin/gitleaks
-
-    - name: Run Gitleaks
-      run: gitleaks --verbose --depth=5
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 1
+      - uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+         
